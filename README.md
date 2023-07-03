@@ -24,4 +24,4 @@ docker-compose up -d
 ```
 npm run start:dev
 yarn start:dev
-```# schedule_manager
+```
