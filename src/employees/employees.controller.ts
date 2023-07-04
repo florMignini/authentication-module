@@ -27,9 +27,9 @@ export class EmployeesController {
     return this.employeesService.findAll(paginationDto);
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.employeesService.findOne(+id);
+  @Get(':search')
+  findOne(search: string) {
+    return this.employeesService.findOne(search);
   }
 
   @Patch(':id')
