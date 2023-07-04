@@ -19,9 +19,12 @@ export class EmployeesService {
     @InjectRepository(Employee)
     private readonly employeeRepository: Repository<Employee>,
   ) {}
-  create(createEmployeeDto: CreateEmployeeDto) {
+  async create(createEmployeeDto: CreateEmployeeDto) {
     try {
-      return `este metodo crea un nuevo empleado`;
+      //create a new employee db registration
+      const employee = this.employeeRepository.create(createEmployeeDto);
+      await this.employeeRepository.save(employee);
+      return employee;
     } catch (error) {
       this.handleErrors(error);
     }

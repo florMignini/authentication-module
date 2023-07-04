@@ -10,6 +10,9 @@ export class CreateEmployeeDto {
   identityNumber: string;
   @IsString()
   @MinLength(6)
+  birthDate: string;
+  @IsString()
+  @MinLength(6)
   username: string;
   @IsString()
   @MinLength(6)
@@ -29,5 +32,8 @@ export class CreateEmployeeDto {
   @IsString()
   address: string;
   @IsString()
-  EmployeeType: string;
+  employeeType: string;
+  @IsString()
+  @MinLength(6)
+  hireDate: string;
 }

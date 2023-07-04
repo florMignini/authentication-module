@@ -39,7 +39,7 @@ export class Employee {
   })
   address: string;
   @Column('text')
-  EmployeeType: string;
+  employeeType: string;
   @Column('date')
   hireDate: string;
 }
