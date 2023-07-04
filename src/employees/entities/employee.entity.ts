@@ -8,6 +8,8 @@ export class Employee {
   firstName: string;
   @Column('text')
   lastName: string;
+  @Column('date')
+  birthDate: string;
   @Column('text')
   identityNumber: string;
   @Column('text', {
@@ -37,5 +39,7 @@ export class Employee {
   })
   address: string;
   @Column('text')
-  type: string;
+  EmployeeType: string;
+  @Column('date')
+  hireDate: string;
 }
