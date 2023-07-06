@@ -36,4 +36,8 @@ export class CreateEmployeeDto {
   @IsString()
   @MinLength(6)
   hireDate: string;
+
+  //employee image
+  @IsString()
+  image: string;
 }

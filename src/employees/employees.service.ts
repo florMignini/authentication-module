@@ -3,6 +3,7 @@ import {
   Injectable,
   InternalServerErrorException,
   Logger,
+  NotFoundException,
 } from '@nestjs/common';
 import { CreateEmployeeDto } from './dto/create-employee.dto';
 import { UpdateEmployeeDto } from './dto/update-employee.dto';
@@ -11,6 +12,7 @@ import { Repository } from 'typeorm';
 import { Employee } from './entities/employee.entity';
 import { PaginationDto } from 'src/common/dto/pagination.dto';
 import { validate as isUUID } from 'uuid';
+import { EmployeeImage } from './entities';
 @Injectable()
 export class EmployeesService {
   //error logger beautification
@@ -18,24 +20,38 @@ export class EmployeesService {
   constructor(
     @InjectRepository(Employee)
     private readonly employeeRepository: Repository<Employee>,
+    @InjectRepository(EmployeeImage)
+    private readonly employeeImageRepository: Repository<EmployeeImage>,
   ) {}
+
   async create(createEmployeeDto: CreateEmployeeDto) {
     try {
+      const { image = '', ...rest } = createEmployeeDto;
       //create a new employee db registration
-      const employee = this.employeeRepository.create(createEmployeeDto);
+      const employee = this.employeeRepository.create({
+        ...rest,
+        image: this.employeeImageRepository.create({ url: image }),
+      });
       await this.employeeRepository.save(employee);
-      return employee;
+      return { ...employee, image };
     } catch (error) {
       this.handleErrors(error);
     }
   }
 
-  findAll(paginationDto: PaginationDto) {
+  async findAll(paginationDto: PaginationDto) {
     const { limit = 10, offset = 0 } = paginationDto;
-    return this.employeeRepository.find({
+    const employees = await this.employeeRepository.find({
       take: limit,
       skip: offset,
+      relations: {
+        image: true,
+      },
     });
+    return employees.map(({ image, ...rest }) => ({
+      ...rest,
+      image: image.url,
+    }));
   }
 
   async findOne(search: string) {
@@ -43,7 +59,7 @@ export class EmployeesService {
     if (isUUID(search)) {
       employee = await this.employeeRepository.findOneBy({ id: search });
     } else {
-      const query = this.employeeRepository.createQueryBuilder();
+      const query = this.employeeRepository.createQueryBuilder('employee');
       employee = await query
         .where(
           'INITCAP(firstName) =:firstName or INITCAP(lastName) =:lastName',
@@ -52,8 +68,11 @@ export class EmployeesService {
             lastName: this.capitalizeName(search),
           },
         )
+        .leftJoinAndSelect('employee.image', 'employeeImage')
         .getOne();
     }
+    if (!employee) throw new NotFoundException(`Employee ${search} not found.`);
+    return employee;
   }
 
   update(id: number, updateEmployeeDto: UpdateEmployeeDto) {
