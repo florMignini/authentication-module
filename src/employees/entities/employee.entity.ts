@@ -1,4 +1,5 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { EmployeeImage } from './employeeImage.entity';
 
 @Entity()
 export class Employee {
@@ -42,4 +43,12 @@ export class Employee {
   employeeType: string;
   @Column('date')
   hireDate: string;
+
+  //relationships
+  //employee image
+  @OneToOne(() => EmployeeImage, (employeeImage) => employeeImage.employee, {
+    cascade: true,
+    eager: true,
+  })
+  image: EmployeeImage;
 }
