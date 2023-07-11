@@ -1,0 +1,30 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type Employee {
+  firstName: String!
+  lastName: String!
+  birthDate: String!
+  identityNumber: String!
+  username: String!
+  password: String!
+  gender: String!
+  bloodType: String!
+  city: String!
+  state: String!
+  zipCode: String!
+  address: String!
+  hireDate: String!
+  position: [String!]!
+  available: Boolean!
+}
+
+type Query {
+  employees: [Employee!]!
+  employee(id: ID!): Employee!
+}
+
+type Mutation {
+  removeEmployee(id: ID!): Employee!
+}
