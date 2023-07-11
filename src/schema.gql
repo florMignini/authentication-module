@@ -3,12 +3,14 @@
 # ------------------------------------------------------
 
 type Employee {
+  id: ID!
   firstName: String!
   lastName: String!
   birthDate: String!
   identityNumber: String!
   username: String!
-  password: String!
+  email: String!
+  phoneNumber: String!
   gender: String!
   bloodType: String!
   city: String!
@@ -20,6 +22,11 @@ type Employee {
   available: Boolean!
 }
 
+type AuthResponse {
+  token: String!
+  employee: Employee!
+}
+
 type Query {
   employees: [Employee!]!
   employee(id: ID!): Employee!
@@ -27,4 +34,25 @@ type Query {
 
 type Mutation {
   removeEmployee(id: ID!): Employee!
+  register(registerInput: RegisterInput!): AuthResponse!
+}
+
+input RegisterInput {
+  firstName: String!
+  lastName: String!
+  birthDate: String!
+  identityNumber: String!
+  username: String!
+  password: String!
+  email: String!
+  phoneNumber: String!
+  gender: String!
+  bloodType: String!
+  city: String!
+  state: String!
+  zipCode: String!
+  address: String!
+  hireDate: String!
+  position: String!
+  available: Boolean!
 }

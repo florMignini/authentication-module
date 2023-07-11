@@ -1,10 +1,17 @@
-import { ObjectType, Field } from '@nestjs/graphql';
-import { Column, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { ObjectType, Field, ID } from '@nestjs/graphql';
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  OneToOne,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 import { EmployeeImage } from './employeeImage.entity';
-
+@Entity({ name: 'employees' })
 @ObjectType()
 export class Employee {
   @PrimaryGeneratedColumn('uuid')
+  @Field(() => ID)
   id: string;
   @Column('text')
   @Field(() => String)
@@ -26,13 +33,18 @@ export class Employee {
   @Column('text', {
     unique: true,
   })
-  @Field(() => String)
+  // @Field(() => String)
   password: string;
   @Column('text', {
     unique: true,
   })
-  // @Field(() => String)
+  @Field(() => String)
   email: string;
+  @Column('text', {
+    unique: true,
+  })
+  @Field(() => String)
+  phoneNumber: string;
   @Column('text')
   @Field(() => String)
   gender: string;
@@ -71,9 +83,10 @@ export class Employee {
   available: boolean;
   //relationships
   //employee image
-  @OneToOne(() => EmployeeImage, (employeeImage) => employeeImage.employee, {
+  @OneToOne(() => EmployeeImage, {
     cascade: true,
     eager: true,
   })
+  @JoinColumn()
   image: EmployeeImage;
 }
