@@ -54,6 +54,10 @@ export class RegisterInput {
   @IsNotEmpty()
   @IsString()
   @Field(() => String)
+  country: string;
+  @IsNotEmpty()
+  @IsString()
+  @Field(() => String)
   city: string;
   @IsNotEmpty()
   @IsString()

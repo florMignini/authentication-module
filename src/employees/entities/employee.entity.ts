@@ -53,6 +53,9 @@ export class Employee {
   bloodType: string;
   @Column('text')
   @Field(() => String)
+  country: string;
+  @Column('text')
+  @Field(() => String)
   city: string;
   @Column('text')
   @Field(() => String)
