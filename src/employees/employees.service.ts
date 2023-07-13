@@ -46,6 +46,15 @@ export class EmployeesService {
     }
   }
 
+  async findOneById(id: string): Promise<Employee> {
+    try {
+      return await this.employeesRepository.findOneByOrFail({ id });
+    } catch (error) {
+      throw new NotFoundException(`${id} not found`);
+      // this.handleError(error);
+    }
+  }
+
   update(id: number, updateEmployeeInput: UpdateEmployeeInput) {
     return `This action updates a #${id} employee`;
   }
