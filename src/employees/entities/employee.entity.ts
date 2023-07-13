@@ -30,9 +30,7 @@ export class Employee {
   })
   @Field(() => String)
   username: string;
-  @Column('text', {
-    unique: true,
-  })
+  @Column('text')
   // @Field(() => String)
   password: string;
   @Column('text', {

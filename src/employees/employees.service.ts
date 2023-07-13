@@ -1,4 +1,10 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  InternalServerErrorException,
+  Logger,
+} from '@nestjs/common';
+import * as bcrypt from 'bcrypt';
 import { CreateEmployeeInput } from './dto/create-employee.input';
 import { UpdateEmployeeInput } from './dto/update-employee.input';
 import { Employee } from './entities/employee.entity';
@@ -8,6 +14,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 
 @Injectable()
 export class EmployeesService {
+  private logger = new Logger('EmployeesService');
   constructor(
     @InjectRepository(Employee)
     private readonly employeesRepository: Repository<Employee>,
@@ -15,11 +22,13 @@ export class EmployeesService {
 
   async create(registerInput: RegisterInput): Promise<Employee> {
     try {
-      const newEmployee = this.employeesRepository.create(registerInput);
+      const newEmployee = this.employeesRepository.create({
+        ...registerInput,
+        password: bcrypt.hashSync(registerInput.password, 10),
+      });
       return await this.employeesRepository.save(newEmployee);
     } catch (error) {
-      console.log(error);
-      throw new BadRequestException(error);
+      this.handleError(error);
     }
   }
 
@@ -37,5 +46,14 @@ export class EmployeesService {
 
   unavailable(id: string) {
     throw new Error(`This action make unavailable a #${id} employee`);
+  }
+
+  // handleError method
+  private handleError(error: any): never {
+    if (error.code === '23505') {
+      throw new BadRequestException(error.detail);
+    }
+    this.logger.error(error);
+    throw new InternalServerErrorException(``);
   }
 }
