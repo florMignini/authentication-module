@@ -36,6 +36,7 @@ type Query {
 type Mutation {
   removeEmployee(id: ID!): Employee!
   register(registerInput: RegisterInput!): AuthResponse!
+  login(loginInput: LoginInput!): AuthResponse!
 }
 
 input RegisterInput {
@@ -57,4 +58,9 @@ input RegisterInput {
   hireDate: String!
   position: String!
   available: Boolean!
+}
+
+input LoginInput {
+  username: String!
+  password: String!
 }

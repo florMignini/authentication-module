@@ -3,12 +3,13 @@ import {
   Injectable,
   InternalServerErrorException,
   Logger,
+  NotFoundException,
 } from '@nestjs/common';
 import * as bcrypt from 'bcrypt';
 import { CreateEmployeeInput } from './dto/create-employee.input';
 import { UpdateEmployeeInput } from './dto/update-employee.input';
 import { Employee } from './entities/employee.entity';
-import { RegisterInput } from 'src/auth/dto/inputs/register.input';
+import { RegisterInput, LoginInput } from 'src/auth/dto/inputs';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 
@@ -36,8 +37,13 @@ export class EmployeesService {
     return [];
   }
 
-  findOne(id: string): Promise<Employee> {
-    throw new Error(`This action returns a #${id} employee`);
+  async findOneByUsername(username: string): Promise<Employee> {
+    try {
+      return await this.employeesRepository.findOneByOrFail({ username });
+    } catch (error) {
+      throw new NotFoundException(`${username} not found`);
+      // this.handleError(error);
+    }
   }
 
   update(id: number, updateEmployeeInput: UpdateEmployeeInput) {

@@ -15,7 +15,8 @@ export class EmployeesResolver {
 
   @Query(() => Employee, { name: 'employee' })
   findOne(@Args('id', { type: () => ID }) id: string): Promise<Employee> {
-    return this.employeesService.findOne(id);
+    // return this.employeesService.findOne(id);
+    throw new Error(`Not implemented yet`);
   }
 
   /* @Mutation(() => Employee)
