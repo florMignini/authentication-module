@@ -19,12 +19,12 @@ type Employee {
   zipCode: String!
   address: String!
   hireDate: String!
-  position: [String!]!
+  position: String!
   available: Boolean!
 }
 
 type AuthResponse {
-  token: String!
+  accessToken: String!
   employee: Employee!
 }
 

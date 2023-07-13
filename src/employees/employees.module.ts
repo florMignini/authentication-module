@@ -8,5 +8,6 @@ import { EmployeeImage } from './entities/employeeImage.entity';
 @Module({
   providers: [EmployeesResolver, EmployeesService],
   imports: [TypeOrmModule.forFeature([Employee, EmployeeImage])],
+  exports: [EmployeesService],
 })
 export class EmployeesModule {}

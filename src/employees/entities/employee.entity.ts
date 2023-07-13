@@ -73,11 +73,10 @@ export class Employee {
   hireDate: string;
   @Column({
     type: 'text',
-    array: true,
-    default: ['developer'],
+    default: 'developer',
   })
-  @Field(() => [String])
-  position: string[];
+  @Field(() => String)
+  position: string;
   @Column({
     type: 'boolean',
     default: true,
