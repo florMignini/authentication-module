@@ -38,7 +38,7 @@ export class EmployeesService {
     if (department.length === 0) return this.employeesRepository.find();
     return this.employeesRepository
       .createQueryBuilder()
-      .andWhere('ARAY[department] && ARRAY[:...department]')
+      .andWhere('ARRAY[department] && ARRAY[:...department]')
       .setParameter('department', department)
       .getMany();
   }
