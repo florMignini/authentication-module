@@ -6,7 +6,8 @@ import {
   OneToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
-import { EmployeeImage } from './employeeImage.entity';
+import { EmployeeImage, EmployeeDepartment } from './';
+
 @Entity({ name: 'employees' })
 @ObjectType()
 export class Employee {
@@ -81,7 +82,16 @@ export class Employee {
   })
   @Field(() => Boolean)
   available: boolean;
+
   //relationships
+  //employee department
+  @OneToOne(() => EmployeeDepartment, {
+    cascade: true,
+    eager: true,
+  })
+  @JoinColumn()
+  department: EmployeeDepartment;
+
   //employee image
   @OneToOne(() => EmployeeImage, {
     cascade: true,
