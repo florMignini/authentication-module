@@ -51,6 +51,14 @@ export class AuthService {
     return employee;
   }
 
+  refreshToken(employee: Employee): AuthResponse {
+    const accessToken = this.getToken(employee.id);
+    return {
+      accessToken,
+      employee,
+    };
+  }
+
   // method for get JWT token
   private getToken(employeeId: string) {
     return this.jwtService.sign({ id: employeeId });

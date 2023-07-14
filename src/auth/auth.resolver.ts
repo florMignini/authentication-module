@@ -4,6 +4,8 @@ import { RegisterInput, LoginInput } from './dto/inputs';
 import { AuthResponse } from './types/auth-response.type';
 import { UseGuards } from '@nestjs/common';
 import { JwtAuthGuard } from './guards/jwt-auth.guard';
+import { CurrentEmployee } from './decorators/current-employee.decorator';
+import { Employee } from 'src/employees/entities/employee.entity';
 
 @Resolver()
 export class AuthResolver {
@@ -26,8 +28,7 @@ export class AuthResolver {
   //REFRESH TOKEN
   @Query(() => AuthResponse, { name: 'refresh_token' })
   @UseGuards(JwtAuthGuard)
-  refreshToken(): AuthResponse {
-    // return this.authService.refreshToken()
-    throw new Error(`not implemented`);
+  refreshToken(@CurrentEmployee() employee: Employee): AuthResponse {
+    return this.authService.refreshToken(employee);
   }
 }
