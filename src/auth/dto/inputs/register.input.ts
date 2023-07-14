@@ -81,4 +81,7 @@ export class RegisterInput {
   @IsBoolean()
   @Field(() => Boolean)
   available: boolean;
+  /*  @IsString()
+  @Field(() => String)
+  image: string; */
 }

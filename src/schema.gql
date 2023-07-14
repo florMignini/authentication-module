@@ -29,9 +29,16 @@ type AuthResponse {
 }
 
 type Query {
-  employees: [Employee!]!
+  employees(department: [ValidDepartment!]! = []): [Employee!]!
   employee(id: ID!): Employee!
   refresh_token: AuthResponse!
+}
+
+"""Allowed employee authorization roles"""
+enum ValidDepartment {
+  admin
+  hhrr
+  user
 }
 
 type Mutation {

@@ -3,13 +3,15 @@ import { EmployeesService } from './employees.service';
 import { Employee } from './entities/employee.entity';
 
 import { UpdateEmployeeInput } from './dto/update-employee.input';
+import { ValidDepartmentArgs } from './dto/args/department.arg';
 
 @Resolver(() => Employee)
 export class EmployeesResolver {
   constructor(private readonly employeesService: EmployeesService) {}
 
   @Query(() => [Employee], { name: 'employees' })
-  findAll(): Promise<Employee[]> {
+  findAll(@Args() validDepartment: ValidDepartmentArgs): Promise<Employee[]> {
+    console.log(validDepartment);
     return this.employeesService.findAll();
   }
 
