@@ -12,6 +12,7 @@ import { Employee } from './entities/employee.entity';
 import { RegisterInput, LoginInput } from 'src/auth/dto/inputs';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
+import { ValidDepartment } from 'src/auth/enums/valid-department.enum';
 
 @Injectable()
 export class EmployeesService {
@@ -33,8 +34,13 @@ export class EmployeesService {
     }
   }
 
-  async findAll(): Promise<Employee[]> {
-    return [];
+  async findAll(department: ValidDepartment[]): Promise<Employee[]> {
+    if (department.length === 0) return this.employeesRepository.find();
+    return this.employeesRepository
+      .createQueryBuilder()
+      .andWhere('ARAY[department] && ARRAY[:...department]')
+      .setParameter('department', department)
+      .getMany();
   }
 
   async findOneByUsername(username: string): Promise<Employee> {

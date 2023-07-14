@@ -1,4 +1,4 @@
-import { Resolver, Query, Mutation, Args, Int, ID } from '@nestjs/graphql';
+import { Resolver, Query, Mutation, Args, ID } from '@nestjs/graphql';
 import { EmployeesService } from './employees.service';
 import { Employee } from './entities/employee.entity';
 
@@ -12,7 +12,7 @@ export class EmployeesResolver {
   @Query(() => [Employee], { name: 'employees' })
   findAll(@Args() validDepartment: ValidDepartmentArgs): Promise<Employee[]> {
     console.log(validDepartment);
-    return this.employeesService.findAll();
+    return this.employeesService.findAll(validDepartment.department);
   }
 
   @Query(() => Employee, { name: 'employee' })
