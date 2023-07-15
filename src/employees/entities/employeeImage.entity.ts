@@ -1,7 +1,7 @@
 import {
   Column,
   Entity,
-  JoinColumn,
+  ManyToOne,
   OneToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
@@ -16,7 +16,6 @@ export class EmployeeImage {
   @Column('text')
   @Field(() => String)
   url: string;
-  @OneToOne(() => Employee)
-  @JoinColumn()
+  @ManyToOne(() => Employee, (employee) => employee.image)
   employee: Employee;
 }

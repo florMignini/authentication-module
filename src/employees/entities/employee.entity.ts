@@ -3,6 +3,8 @@ import {
   Column,
   Entity,
   JoinColumn,
+  ManyToOne,
+  OneToMany,
   OneToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
@@ -85,18 +87,20 @@ export class Employee {
 
   //relationships
   //employee department
-  @OneToOne(() => EmployeeDepartment, {
-    cascade: true,
-    eager: true,
-  })
-  @JoinColumn()
+  @ManyToOne(
+    () => EmployeeDepartment,
+    (employeeDepartment) => employeeDepartment.employee,
+    {
+      cascade: true,
+      eager: true,
+    },
+  )
   department: EmployeeDepartment;
 
   //employee image
-  @OneToOne(() => EmployeeImage, {
+  @OneToOne(() => EmployeeImage, (employeeImage) => employeeImage.employee, {
     cascade: true,
     eager: true,
   })
-  @JoinColumn()
   image: EmployeeImage;
 }
