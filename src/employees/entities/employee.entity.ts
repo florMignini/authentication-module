@@ -2,9 +2,7 @@ import { ObjectType, Field, ID } from '@nestjs/graphql';
 import {
   Column,
   Entity,
-  JoinColumn,
   ManyToOne,
-  OneToMany,
   OneToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
