@@ -34,7 +34,17 @@ export class EmployeesService {
     }
   }
 
-  async findAll(department: ValidDepartment[]): Promise<Employee[]> {
+  async findAll(): Promise<Employee[]> {
+    try {
+      return await this.employeesRepository.find();
+    } catch (error) {
+      this.handleError(error);
+    }
+  }
+
+  async findAllByDepartment(
+    department: ValidDepartment[],
+  ): Promise<Employee[]> {
     if (department.length === 0) return this.employeesRepository.find();
     return this.employeesRepository
       .createQueryBuilder()

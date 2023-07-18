@@ -30,7 +30,8 @@ type AuthResponse {
 }
 
 type Query {
-  employees(department: [ValidDepartment!]! = []): [Employee!]!
+  searchEmployees(department: [ValidDepartment!]! = []): [Employee!]!
+  searchEmployeesByDepartment(department: [ValidDepartment!]! = []): [Employee!]!
   searchEmployeeById(id: ID!): Employee!
   searchEmployeeUsername(username: String!): Employee!
   refresh_token: AuthResponse!
@@ -69,7 +70,7 @@ input RegisterInput {
   position: String!
   available: Boolean!
   image: String!
-  department: String!
+  department: [String!]!
 }
 
 input LoginInput {

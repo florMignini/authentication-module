@@ -78,7 +78,14 @@ export class RegisterInput {
   @Field(() => String)
   hireDate: string;
   @IsString()
-  @IsIn(['Developer', 'UX/UI Designer', 'Data scientist', 'Data analyst'])
+  @IsIn([
+    'CEO',
+    'Developer',
+    'UX/UI Designer',
+    'Data scientist',
+    'Data analyst',
+    'HR office',
+  ])
   @Field(() => String)
   position: string;
   @IsBoolean()
@@ -89,6 +96,6 @@ export class RegisterInput {
   image: string;
   @IsString({ each: true })
   @IsArray()
-  @Field(() => String)
+  @Field(() => [String])
   department: string[];
 }
