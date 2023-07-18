@@ -75,8 +75,11 @@ export class EmployeesService {
     return `This action updates a #${id} employee`;
   }
 
-  unavailable(id: string) {
-    throw new Error(`This action make unavailable a #${id} employee`);
+  async unavailable(id: string, employee: Employee): Promise<Employee> {
+    const employeeToBlock = await this.findOneById(id);
+    employeeToBlock.available = false;
+    employeeToBlock.lastUpdatedBy = employee;
+    return await this.employeesRepository.save(employeeToBlock);
   }
 
   // handleError method

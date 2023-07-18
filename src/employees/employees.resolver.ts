@@ -70,8 +70,13 @@ export class EmployeesResolver {
     );
   } */
 
+  /* @ONLY ADMIN & HHRR ALLOWED */
   @Mutation(() => Employee)
-  removeEmployee(@Args('id', { type: () => ID }) id: string) {
-    return this.employeesService.unavailable(id);
+  removeEmployee(
+    @Args('id', { type: () => ID }, ParseUUIDPipe) id: string,
+    @CurrentEmployee([ValidDepartment.admin])
+    employee: Employee,
+  ) {
+    return this.employeesService.unavailable(id, employee);
   }
 }

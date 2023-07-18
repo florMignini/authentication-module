@@ -22,6 +22,7 @@ type Employee {
   position: String!
   available: Boolean!
   image: String!
+  lastUpdatedBy: Employee
 }
 
 type AuthResponse {
