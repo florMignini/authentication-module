@@ -15,10 +15,23 @@ export class EmployeesResolver {
     return this.employeesService.findAll(validDepartment.department);
   }
 
-  @Query(() => Employee, { name: 'employee' })
-  findOne(@Args('id', { type: () => ID }) id: string): Promise<Employee> {
-    // return this.employeesService.findOne(id);
-    throw new Error(`Not implemented yet`);
+  @Query(() => Employee, { name: 'searchEmployeeById' })
+  findOneById(@Args('id', { type: () => ID }) id: string): Promise<Employee> {
+    try {
+      return this.employeesService.findOneById(id);
+    } catch (error) {
+      throw new Error(`Not implemented yet`);
+    }
+  }
+  @Query(() => Employee, { name: 'searchEmployeeUsername' })
+  findOneByUsername(
+    @Args('username', { type: () => String }) username: string,
+  ): Promise<Employee> {
+    try {
+      return this.employeesService.findOneByUsername(username);
+    } catch (error) {
+      throw new Error(`employee ${username} not found`);
+    }
   }
 
   /* @Mutation(() => Employee)

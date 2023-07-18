@@ -1,11 +1,14 @@
 import { Field, InputType } from '@nestjs/graphql';
 import {
+  IsArray,
   IsBoolean,
   IsEmail,
+  IsIn,
   IsNotEmpty,
   IsString,
   MinLength,
 } from 'class-validator';
+import { EmployeeDepartment } from 'src/employees/entities';
 
 @InputType()
 export class RegisterInput {
@@ -76,12 +79,17 @@ export class RegisterInput {
   @Field(() => String)
   hireDate: string;
   @IsString()
+  @IsIn(['Developer', 'UX/UI Designer', 'Data scientist', 'Data analyst'])
   @Field(() => String)
   position: string;
   @IsBoolean()
   @Field(() => Boolean)
   available: boolean;
-  /*  @IsString()
+  @IsString()
   @Field(() => String)
-  image: string; */
+  image: string;
+  @IsString({ each: true })
+  @IsArray()
+  @Field(() => String)
+  department: EmployeeDepartment;
 }

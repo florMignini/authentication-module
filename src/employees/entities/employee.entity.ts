@@ -1,12 +1,6 @@
 import { ObjectType, Field, ID } from '@nestjs/graphql';
-import {
-  Column,
-  Entity,
-  ManyToOne,
-  OneToOne,
-  PrimaryGeneratedColumn,
-} from 'typeorm';
-import { EmployeeImage, EmployeeDepartment } from './';
+import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { EmployeeDepartment } from './employeeDepartment.entity';
 
 @Entity({ name: 'employees' })
 @ObjectType()
@@ -82,6 +76,12 @@ export class Employee {
   })
   @Field(() => Boolean)
   available: boolean;
+  @Column('text', {
+    default:
+      'https://www.shutterstock.com/image-vector/user-login-authenticate-icon-human-600w-1556952635.jpg',
+  })
+  @Field(() => String)
+  image: string;
 
   //relationships
   //employee department
@@ -94,11 +94,4 @@ export class Employee {
     },
   )
   department: EmployeeDepartment;
-
-  //employee image
-  @OneToOne(() => EmployeeImage, (employeeImage) => employeeImage.employee, {
-    cascade: true,
-    eager: true,
-  })
-  image: EmployeeImage;
 }

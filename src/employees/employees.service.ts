@@ -56,7 +56,7 @@ export class EmployeesService {
     try {
       return await this.employeesRepository.findOneByOrFail({ id });
     } catch (error) {
-      throw new NotFoundException(`${id} not found`);
+      throw new NotFoundException(`employee with ${id} not found`);
       // this.handleError(error);
     }
   }

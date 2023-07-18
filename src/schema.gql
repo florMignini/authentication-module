@@ -21,6 +21,7 @@ type Employee {
   hireDate: String!
   position: String!
   available: Boolean!
+  image: String!
 }
 
 type AuthResponse {
@@ -30,7 +31,8 @@ type AuthResponse {
 
 type Query {
   employees(department: [ValidDepartment!]! = []): [Employee!]!
-  employee(id: ID!): Employee!
+  searchEmployeeById(id: ID!): Employee!
+  searchEmployeeUsername(username: String!): Employee!
   refresh_token: AuthResponse!
 }
 
@@ -66,6 +68,8 @@ input RegisterInput {
   hireDate: String!
   position: String!
   available: Boolean!
+  image: String!
+  department: String!
 }
 
 input LoginInput {
