@@ -11,6 +11,7 @@ export const CurrentEmployee = createParamDecorator(
   (department: ValidDepartment[] = [], context: ExecutionContext) => {
     const ctx = GqlExecutionContext.create(context);
     const employee = ctx.getContext().req.user;
+
     if (!employee) {
       throw new InternalServerErrorException(`No employee available`);
     }
