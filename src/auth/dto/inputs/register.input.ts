@@ -8,7 +8,6 @@ import {
   IsString,
   MinLength,
 } from 'class-validator';
-import { EmployeeDepartment } from 'src/employees/entities';
 
 @InputType()
 export class RegisterInput {
@@ -91,5 +90,5 @@ export class RegisterInput {
   @IsString({ each: true })
   @IsArray()
   @Field(() => String)
-  department: EmployeeDepartment;
+  department: string[];
 }

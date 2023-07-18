@@ -1,6 +1,5 @@
 import { ObjectType, Field, ID } from '@nestjs/graphql';
 import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
-import { EmployeeDepartment } from './employeeDepartment.entity';
 
 @Entity({ name: 'employees' })
 @ObjectType()
@@ -83,15 +82,9 @@ export class Employee {
   @Field(() => String)
   image: string;
 
-  //relationships
-  //employee department
-  @ManyToOne(
-    () => EmployeeDepartment,
-    (employeeDepartment) => employeeDepartment.employee,
-    {
-      cascade: true,
-      eager: true,
-    },
-  )
-  department: EmployeeDepartment;
+  @Column('text', {
+    array: true,
+    default: ['user'],
+  })
+  department: string[];
 }

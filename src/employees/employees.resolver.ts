@@ -11,7 +11,6 @@ export class EmployeesResolver {
 
   @Query(() => [Employee], { name: 'employees' })
   findAll(@Args() validDepartment: ValidDepartmentArgs): Promise<Employee[]> {
-    console.log(validDepartment);
     return this.employeesService.findAll(validDepartment.department);
   }
 
