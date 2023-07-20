@@ -6,13 +6,14 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import * as bcrypt from 'bcrypt';
-import { CreateEmployeeInput } from './dto/create-employee.input';
-import { UpdateEmployeeInput } from './dto/update-employee.input';
-import { Employee } from './entities/employee.entity';
+import { CreateEmployeeInput } from '../department/dto/create-employee.input';
+import { UpdateEmployeeInput } from '../department/dto/update-employee.input';
+
 import { RegisterInput, LoginInput } from 'src/auth/dto/inputs';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { ValidDepartment } from 'src/auth/enums/valid-department.enum';
+import { Employee } from './entities/employee.entity';
 
 @Injectable()
 export class EmployeesService {

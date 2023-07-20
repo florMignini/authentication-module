@@ -94,8 +94,8 @@ export class RegisterInput {
   @IsString()
   @Field(() => String)
   image: string;
-  @IsString({ each: true })
+  /*  @IsString({ each: true })
   @IsArray()
   @Field(() => [String])
-  department: string[];
+  department: string[]; */
 }

@@ -1,4 +1,5 @@
 import { ObjectType, Field, ID } from '@nestjs/graphql';
+import { Department } from 'src/department/entities/department.entity';
 import {
   Column,
   Entity,
@@ -88,12 +89,6 @@ export class Employee {
   @Field(() => String)
   image: string;
 
-  @Column('text', {
-    array: true,
-    default: ['user'],
-  })
-  department: string[];
-
   @ManyToOne(() => Employee, (employee) => employee.lastUpdatedBy, {
     nullable: true,
     lazy: true,
@@ -101,4 +96,7 @@ export class Employee {
   @JoinColumn({ name: 'lastUpdatedBy' })
   @Field(() => Employee, { nullable: true })
   lastUpdatedBy?: Employee;
+  // relations
+  @ManyToOne(() => Department, (department) => department.employees)
+  department: Department;
 }

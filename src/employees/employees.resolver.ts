@@ -2,8 +2,8 @@ import { Resolver, Query, Mutation, Args, ID } from '@nestjs/graphql';
 import { EmployeesService } from './employees.service';
 import { Employee } from './entities/employee.entity';
 
-import { UpdateEmployeeInput } from './dto/update-employee.input';
-import { ValidDepartmentArgs } from './dto/args/department.arg';
+import { UpdateEmployeeInput } from '../department/dto/update-employee.input';
+import { ValidDepartmentArgs } from '../department/dto/args/department.arg';
 import { CurrentEmployee } from 'src/auth/decorators/current-employee.decorator';
 import { ValidDepartment } from 'src/auth/enums/valid-department.enum';
 import { ParseUUIDPipe, UseGuards } from '@nestjs/common';
