@@ -1,5 +1,5 @@
 export enum ValidDepartment {
-  admin = 'admin',
-  hhrr = 'hhrr',
-  user = 'user',
+  ADMIN = 'ADMIN',
+  HHRR = 'HHRR',
+  IT = 'IT',
 }

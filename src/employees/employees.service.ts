@@ -6,7 +6,6 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import * as bcrypt from 'bcrypt';
-import { CreateEmployeeInput } from '../department/dto/create-employee.input';
 import { UpdateEmployeeInput } from '../department/dto/update-employee.input';
 
 import { RegisterInput, LoginInput } from 'src/auth/dto/inputs';

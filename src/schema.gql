@@ -9,9 +9,9 @@ type Department {
 
 """Allowed employee authorization roles"""
 enum ValidDepartment {
-  admin
-  hhrr
-  user
+  ADMIN
+  HHRR
+  IT
 }
 
 type Employee {
@@ -55,6 +55,7 @@ type Mutation {
   removeEmployee(id: ID!): Employee!
   register(registerInput: RegisterInput!): AuthResponse!
   login(loginInput: LoginInput!): AuthResponse!
+  department(createDepartmentInput: CreateDepartmentInput!): Department!
 }
 
 input RegisterInput {
@@ -82,4 +83,8 @@ input RegisterInput {
 input LoginInput {
   username: String!
   password: String!
+}
+
+input CreateDepartmentInput {
+  departmentName: [ValidDepartment!]!
 }

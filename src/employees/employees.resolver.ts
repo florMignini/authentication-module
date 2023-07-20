@@ -17,7 +17,7 @@ export class EmployeesResolver {
   @Query(() => [Employee], { name: 'searchEmployees' })
   findAll(
     @Args() validDepartment: ValidDepartmentArgs,
-    @CurrentEmployee([ValidDepartment.admin, ValidDepartment.hhrr])
+    @CurrentEmployee([ValidDepartment.ADMIN, ValidDepartment.HHRR])
     employee: Employee,
   ): Promise<Employee[]> {
     return this.employeesService.findAll();
@@ -26,7 +26,7 @@ export class EmployeesResolver {
   @Query(() => [Employee], { name: 'searchEmployeesByDepartment' })
   findAllByDepartment(
     @Args() validDepartment: ValidDepartmentArgs,
-    @CurrentEmployee([ValidDepartment.admin])
+    @CurrentEmployee([ValidDepartment.ADMIN])
     employee: Employee,
   ): Promise<Employee[]> {
     return this.employeesService.findAllByDepartment(
@@ -37,7 +37,7 @@ export class EmployeesResolver {
   @Query(() => Employee, { name: 'searchEmployeeById' })
   findOneById(
     @Args('id', { type: () => ID }, ParseUUIDPipe) id: string,
-    @CurrentEmployee([ValidDepartment.admin, ValidDepartment.hhrr])
+    @CurrentEmployee([ValidDepartment.ADMIN, ValidDepartment.HHRR])
     employee: Employee,
   ): Promise<Employee> {
     try {
@@ -50,7 +50,7 @@ export class EmployeesResolver {
   @Query(() => Employee, { name: 'searchEmployeeUsername' })
   findOneByUsername(
     @Args('username', { type: () => String }) username: string,
-    @CurrentEmployee([ValidDepartment.admin, ValidDepartment.hhrr])
+    @CurrentEmployee([ValidDepartment.ADMIN, ValidDepartment.HHRR])
     employee: Employee,
   ): Promise<Employee> {
     try {
@@ -74,7 +74,7 @@ export class EmployeesResolver {
   @Mutation(() => Employee)
   removeEmployee(
     @Args('id', { type: () => ID }, ParseUUIDPipe) id: string,
-    @CurrentEmployee([ValidDepartment.admin])
+    @CurrentEmployee([ValidDepartment.ADMIN])
     employee: Employee,
   ) {
     return this.employeesService.unavailable(id, employee);
