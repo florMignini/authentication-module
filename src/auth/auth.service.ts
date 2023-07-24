@@ -14,6 +14,7 @@ export class AuthService {
     const new_employee = await this.prisma.employee.create({
       data: { ...rest, password: hashed_password },
     });
+    delete new_employee.password;
     // 3. return the new employee
     return new_employee;
   }

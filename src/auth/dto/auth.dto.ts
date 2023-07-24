@@ -70,4 +70,5 @@ export class RegisterDto {
   position: string;
   @IsBoolean()
   is_available: boolean;
+  // department:
 }
