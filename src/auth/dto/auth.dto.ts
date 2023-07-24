@@ -26,6 +26,11 @@ export class RegisterDto {
   })
   password: string;
   @IsString()
+  @MinLength(8, {
+    message: `Username must have at least $constraint1 characters`,
+  })
+  username: string;
+  @IsString()
   @IsEnum(Gender, {
     message: `Invalid gender. Plase select: male, female, other`,
   })
