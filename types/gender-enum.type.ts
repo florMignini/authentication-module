@@ -1,4 +1,3 @@
-// GenderEnum.ts
 export enum Gender {
   MALE = 'male',
   FEMALE = 'female',
