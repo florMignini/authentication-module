@@ -5,93 +5,89 @@ import {
   Logger,
   NotFoundException,
 } from '@nestjs/common';
-import { CreateEmployeeDto } from './dto/create-employee.dto';
-import { UpdateEmployeeDto } from './dto/update-employee.dto';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import * as bcrypt from 'bcrypt';
+import { CreateEmployeeInput } from './dto/create-employee.input';
+import { UpdateEmployeeInput } from './dto/update-employee.input';
 import { Employee } from './entities/employee.entity';
-import { PaginationDto } from 'src/common/dto/pagination.dto';
-import { validate as isUUID } from 'uuid';
-import { EmployeeImage } from './entities';
+import { RegisterInput, LoginInput } from 'src/auth/dto/inputs';
+import { Repository } from 'typeorm';
+import { InjectRepository } from '@nestjs/typeorm';
+import { ValidDepartment } from 'src/auth/enums/valid-department.enum';
+
 @Injectable()
 export class EmployeesService {
-  //error logger beautification
-  private readonly logger = new Logger('EmployeesService');
+  private logger = new Logger('EmployeesService');
   constructor(
     @InjectRepository(Employee)
-    private readonly employeeRepository: Repository<Employee>,
-    @InjectRepository(EmployeeImage)
-    private readonly employeeImageRepository: Repository<EmployeeImage>,
+    private readonly employeesRepository: Repository<Employee>,
   ) {}
 
-  async create(createEmployeeDto: CreateEmployeeDto) {
+  async create(registerInput: RegisterInput): Promise<Employee> {
     try {
-      const { image = '', ...rest } = createEmployeeDto;
-      //create a new employee db registration
-      const employee = this.employeeRepository.create({
-        ...rest,
-        image: this.employeeImageRepository.create({ url: image }),
+      const newEmployee = this.employeesRepository.create({
+        ...registerInput,
+        password: bcrypt.hashSync(registerInput.password, 10),
       });
-      await this.employeeRepository.save(employee);
-      return { ...employee, image };
+      return await this.employeesRepository.save(newEmployee);
     } catch (error) {
-      this.handleErrors(error);
+      this.handleError(error);
     }
   }
 
-  async findAll(paginationDto: PaginationDto) {
-    const { limit = 10, offset = 0 } = paginationDto;
-    const employees = await this.employeeRepository.find({
-      take: limit,
-      skip: offset,
-      relations: {
-        image: true,
-      },
-    });
-    return employees.map(({ image, ...rest }) => ({
-      ...rest,
-      image: image.url,
-    }));
-  }
-
-  async findOne(search: string) {
-    let employee: Employee;
-    if (isUUID(search)) {
-      employee = await this.employeeRepository.findOneBy({ id: search });
-    } else {
-      const query = this.employeeRepository.createQueryBuilder('employee');
-      employee = await query
-        .where(
-          'INITCAP(firstName) =:firstName or INITCAP(lastName) =:lastName',
-          {
-            firstName: this.capitalizeName(search),
-            lastName: this.capitalizeName(search),
-          },
-        )
-        .leftJoinAndSelect('employee.image', 'employeeImage')
-        .getOne();
+  async findAll(): Promise<Employee[]> {
+    try {
+      return await this.employeesRepository.find();
+    } catch (error) {
+      this.handleError(error);
     }
-    if (!employee) throw new NotFoundException(`Employee ${search} not found.`);
-    return employee;
   }
 
-  update(id: number, updateEmployeeDto: UpdateEmployeeDto) {
+  async findAllByDepartment(
+    department: ValidDepartment[],
+  ): Promise<Employee[]> {
+    if (department.length === 0) return this.employeesRepository.find();
+    return this.employeesRepository
+      .createQueryBuilder()
+      .andWhere('ARRAY[department] && ARRAY[:...department]')
+      .setParameter('department', department)
+      .getMany();
+  }
+
+  async findOneByUsername(username: string): Promise<Employee> {
+    try {
+      return await this.employeesRepository.findOneByOrFail({ username });
+    } catch (error) {
+      throw new NotFoundException(`${username} not found`);
+      // this.handleError(error);
+    }
+  }
+
+  async findOneById(id: string): Promise<Employee> {
+    try {
+      return await this.employeesRepository.findOneByOrFail({ id });
+    } catch (error) {
+      throw new NotFoundException(`employee with ${id} not found`);
+      // this.handleError(error);
+    }
+  }
+
+  update(id: number, updateEmployeeInput: UpdateEmployeeInput) {
     return `This action updates a #${id} employee`;
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} employee`;
+  async unavailable(id: string, employee: Employee): Promise<Employee> {
+    const employeeToBlock = await this.findOneById(id);
+    employeeToBlock.available = false;
+    employeeToBlock.lastUpdatedBy = employee;
+    return await this.employeesRepository.save(employeeToBlock);
   }
 
-  //method for handle db errors
-  private handleErrors(error: any) {
-    if (error.code === '23505') throw new BadRequestException(error.detail);
+  // handleError method
+  private handleError(error: any): never {
+    if (error.code === '23505') {
+      throw new BadRequestException(error.detail);
+    }
     this.logger.error(error);
-    throw new InternalServerErrorException(`Unexpected error occurred`);
-  }
-
-  //method for name capitalization
-  private capitalizeName(name: string) {
-    `${name.charAt(0).toUpperCase()}${name.slice(1).toLowerCase()}`;
+    throw new InternalServerErrorException(``);
   }
 }

@@ -1,12 +1,13 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { EmployeesModule } from './employees/employees.module';
 import { CommonModule } from './common/common.module';
 import { GraphQLModule } from '@nestjs/graphql';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { join } from 'path';
 import { ApolloServerPluginLandingPageLocalDefault } from '@apollo/server/plugin/landingPage/default';
+import { EmployeesModule } from './employees/employees.module';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -31,8 +32,9 @@ import { ApolloServerPluginLandingPageLocalDefault } from '@apollo/server/plugin
       autoLoadEntities: true,
       synchronize: true,
     }),
-    EmployeesModule,
     CommonModule,
+    EmployeesModule,
+    AuthModule,
   ],
   controllers: [],
   providers: [],
