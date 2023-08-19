@@ -12,25 +12,27 @@ datasource db {
 
 //model declaration
 model Employee {
-  id          Int      @id @default(autoincrement())
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-  firstname   String
-  lastname    String
-  email       String
-  hash        String
-  position    String
-  department Department @relation(fields: [departmentId], references: [id])
-  departmentId  Int
-  dateOfBirth String
-  nacionality String
-  city        String
+  id           Int        @id @default(autoincrement())
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt
+  firstname    String
+  lastname     String
+  email        String @unique
+  password     String
+  position     String
+  department   Department @relation(fields: [departmentId], references: [id])
+  departmentId Int
+  dateOfBirth  String
+  nacionality  String
+  city         String
+  @@map("Employees")
 }
 
 model Department {
-  id   Int    @id @default(autoincrement())
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-  name String
-  employee Employee[]
+  id        Int        @id @default(autoincrement())
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+  name      String
+  employee  Employee[]
+  @@map("Departments")
 }
